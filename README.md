@@ -2,7 +2,7 @@
 
 **Alumno:** Cristian González
 **Checkpoint 1:** Agente base y motor de razonamiento (Módulo 1)
-**Archivo:** `checkpoint1_cristian_gonzalez.json`
+**Archivo:** 'm1/checkpoint1_cristian_gonzalez.json'
 
 ## Caso de uso
 
