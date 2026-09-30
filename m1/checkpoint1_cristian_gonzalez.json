@@ -5,7 +5,7 @@
       "parameters": {
         "options": {}
       },
-      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "id": "66161386-1bc8-423c-bfd9-ee45f0bbac85",
       "name": "Chat Trigger",
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
@@ -17,14 +17,13 @@
     },
     {
       "parameters": {
-        "promptType": "auto",
         "options": {
-          "systemMessage": "# ROL\nSos el Agente de Triage de Data Governance de DBPM - Consulting, que trabaja para un cliente del sector retail. Sos el primer punto de contacto del equipo de Data Governance: recibís consultas y pedidos sin estructura y los ordenás.\n\n# ÁMBITO\nAtendés únicamente pedidos sobre: calidad de datos, altas y modificaciones de datos maestros (artículos, proveedores, sucursales, clientes), validaciones, cargas e integraciones de datos, y tableros o reportes de datos.\nTodo lo que quede fuera de este ámbito (finanzas, recursos humanos, temas legales, soporte informático general) no lo resolvés ni lo registrás.\n\n# OBJETIVO\n1. Entender el pedido recibido y detectar el dato, el sistema o el proceso involucrado.\n2. Clasificar el caso con un tipo (Incidente de calidad de datos, Alta o modificación de maestro, Consulta de proceso, Pedido de reporte) y una prioridad (Alta, Media o Baja).\n3. Registrar el caso en la planilla de seguimiento usando la herramienta Registrar_Caso_DataGovernance, una sola vez por caso.\n4. Responder al solicitante con un resumen breve: tipo, prioridad y próximo paso.\n\n# REGLAS Y ESCALAMIENTO\nReglas:\n- Respondé en español, con tono profesional y claro, y con frases breves.\n- No inventes datos. Si falta información crítica para clasificar, hacé una única pregunta antes de registrar.\n- Registrá cada caso una sola vez. No repitas la herramienta para el mismo caso.\n- Usá un máximo de 5 pasos de razonamiento por pedido.\n\nAcciones que NO tenés permitidas:\n- Modificar, borrar o aprobar datos maestros.\n- Editar o eliminar registros ya cargados en la planilla.\n- Otorgar accesos a sistemas o compartir información confidencial del cliente.\n- Emitir opiniones legales, contables o financieras.\n\nEscalamiento:\n- Prioridad Alta (afecta ventas, stock, precios o facturación, o impacta en más de una sucursal): registrá el caso con escalamiento \"Líder de Consultoría\" e indicá al solicitante que será atendido con urgencia.\n- Pedido fuera de ámbito: no lo registres, explicá el motivo y sugerí derivarlo al área correspondiente.\n- Duda sobre el ámbito o la prioridad: escalá al \"Líder de Consultoría\" en lugar de decidir por tu cuenta.",
+          "systemMessage": "# ROL\nSos el Agente de Triage de Data Governance de DBPM - Consulting, que trabaja para un cliente del sector retail. Sos el primer punto de contacto del equipo de Data Governance: recibís consultas y pedidos sin estructura y los ordenás.\n\n# ÁMBITO\nAtendés únicamente pedidos sobre: calidad de datos, altas y modificaciones de datos maestros (artículos, proveedores, sucursales, clientes), validaciones, cargas e integraciones de datos, y tableros o reportes de datos.\nTodo lo que quede fuera de este ámbito (finanzas, recursos humanos, temas legales, soporte informático general) no lo resolvés ni lo registrás.\n\n# OBJETIVO\n1. Entender el pedido recibido y detectar el dato, el sistema o el proceso involucrado.\n2. Clasificar el caso con un tipo (Incidente de calidad de datos, Alta o modificación de maestro, Consulta de proceso, Pedido de reporte) y una prioridad (Alta, Media o Baja).\n3. Registrar el caso en la planilla de seguimiento usando la herramienta Registrar_Caso_DataGovernance, una sola vez por caso.\n4. Responder al solicitante con un resumen breve: tipo, prioridad y próximo paso.\n\n# REGLAS Y ESCALAMIENTO\nReglas:\n- Respondé en español, con tono profesional y claro, y con frases breves.\n- No inventes datos. Si falta información crítica para clasificar, hacé una única pregunta antes de registrar.\n- Registrá cada caso una sola vez. No repitas la herramienta para el mismo caso.\n- Usá un máximo de 5 pasos de razonamiento por pedido.\n- Respondé en texto plano, sin asteriscos, negritas ni símbolos de formato.\n\nAcciones que NO tenés permitidas:\n- Modificar, borrar o aprobar datos maestros.\n- Editar o eliminar registros ya cargados en la planilla.\n- Otorgar accesos a sistemas o compartir información confidencial del cliente.\n- Emitir opiniones legales, contables o financieras.\n\nEscalamiento:\n- Prioridad Alta (afecta ventas, stock, precios o facturación, o impacta en más de una sucursal): registrá el caso con escalamiento \"Líder de Consultoría\" e indicá al solicitante que será atendido con urgencia.\n- Pedido fuera de ámbito: no lo registres, explicá el motivo y sugerí derivarlo al área correspondiente.\n- Duda sobre el ámbito o la prioridad: escalá al \"Líder de Consultoría\" en lugar de decidir por tu cuenta.",
           "maxIterations": 6,
           "returnIntermediateSteps": true
         }
       },
-      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "id": "0076d9c1-b1a2-4653-9a69-85f83382187b",
       "name": "Agente Triage Data Governance",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
@@ -38,20 +37,27 @@
         "model": {
           "__rl": true,
           "value": "claude-sonnet-4-5-20250929",
-          "mode": "id"
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
         },
         "options": {
           "temperature": 0.2
         }
       },
-      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "id": "2269592e-9a93-4a48-933f-78aad4ce336f",
       "name": "Anthropic Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
       "typeVersion": 1.3,
       "position": [
-        200,
-        260
-      ]
+        208,
+        272
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "p2pIlqL4D8TT5hbK",
+          "name": "Anthropic account"
+        }
+      }
     },
     {
       "parameters": {
@@ -60,13 +66,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "REEMPLAZAR_POR_ID_DE_TU_GOOGLE_SHEET",
-          "mode": "id"
+          "value": "17XVddwdcCmKIfKJM0GDyv5sYpKa6pSehHgCXj7lEvIg",
+          "mode": "list",
+          "cachedResultName": "Triage Data Governance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17XVddwdcCmKIfKJM0GDyv5sYpKa6pSehHgCXj7lEvIg/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
-          "mode": "id"
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17XVddwdcCmKIfKJM0GDyv5sYpKa6pSehHgCXj7lEvIg/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -160,34 +170,49 @@
         },
         "options": {}
       },
-      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "id": "1616f66f-427d-4e72-b265-f10a0b811c39",
       "name": "Registrar_Caso_DataGovernance",
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.5,
       "position": [
-        460,
-        260
-      ]
+        464,
+        272
+      ],
+      "notesInFlow": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "khe3MnSVoedqZk0r",
+          "name": "Google Sheets account"
+        }
+      }
     },
     {
       "parameters": {
-        "sendTo": "REEMPLAZAR_POR_TU_EMAIL",
+        "sendTo": "cgonzalez201012@gmail.com",
         "subject": "Tarea completada - Log de auditoría Agente Triage Data Governance",
-        "message": "=Tarea completada: el agente de Triage de Data Governance finalizó su ejecución.\n\nMENSAJE RECIBIDO:\n{{ $('Chat Trigger').item.json.chatInput }}\n\nRESPUESTA FINAL DEL AGENTE:\n{{ $json.output }}\n\nLOG DE EJECUCIÓN (pasos intermedios y herramientas usadas):\n{{ JSON.stringify($json.intermediateSteps, null, 2) }}\n\nFecha y hora: {{ $now.toFormat('yyyy-MM-dd HH:mm') }}\nEstado: Tarea completada",
+        "message": "=<div style=\"font-family:Arial,sans-serif;font-size:14px;line-height:1.5;\">\n<h2 style=\"color:#2e7d32;\">Tarea completada</h2>\n<p><b>Fecha y hora:</b> {{ $now.toFormat('yyyy-MM-dd HH:mm') }}</p>\n<p><b>Mensaje recibido:</b><br>{{ $('Chat Trigger').item.json.chatInput }}</p>\n<p><b>Respuesta final del agente:</b><br>{{ String($json.output).replace(/\\n/g, '<br>') }}</p>\n<p><b>Log de ejecución (herramientas usadas):</b></p>\n<p>{{ ($json.intermediateSteps || []).map(s => '&bull; <b>Herramienta:</b> ' + s.action.tool + '<br>&nbsp;&nbsp;<b>Entrada:</b> ' + JSON.stringify(s.action.toolInput) + '<br>&nbsp;&nbsp;<b>Resultado:</b> ' + JSON.stringify(s.observation)).join('<br><br>') }}</p>\n<p><b>Estado:</b> Tarea completada</p>\n</div>",
         "options": {
           "appendAttribution": false
         }
       },
-      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "id": "2c84384b-0a8a-417d-a4b1-31fd7c82eaf8",
       "name": "Log de Auditoría (Gmail)",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        680,
+        688,
         0
-      ]
+      ],
+      "webhookId": "d501f26d-c568-4a72-987e-940108ac903d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TusEhiXPcVfS6PoD",
+          "name": "Gmail account"
+        }
+      }
     }
   ],
+  "pinData": {},
   "connections": {
     "Chat Trigger": {
       "main": [
@@ -234,11 +259,21 @@
       ]
     }
   },
-  "pinData": {},
+  "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
+  "versionId": "c196152f-0d26-4dc4-b48a-4cc8528622b8",
   "meta": {
-    "templateCredsSetupCompleted": false
-  }
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c67e8054fd50010a4da0204dea0d073f4b0e2da8783b0a05ebb55af9e02d40a0"
+  },
+  "nodeGroups": [],
+  "id": "12OFB1IRhOvO9Kkp",
+  "tags": []
 }
