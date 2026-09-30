@@ -1,0 +1,244 @@
+{
+  "name": "Checkpoint 1 - Agente de Triage de Data Governance",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "7d1c2f0e-1b7a-4e3a-9a55-3f2a6c0b1e01"
+    },
+    {
+      "parameters": {
+        "promptType": "auto",
+        "options": {
+          "systemMessage": "# ROL\nSos el Agente de Triage de Data Governance de DBPM - Consulting, que trabaja para un cliente del sector retail. Sos el primer punto de contacto del equipo de Data Governance: recibís consultas y pedidos sin estructura y los ordenás.\n\n# ÁMBITO\nAtendés únicamente pedidos sobre: calidad de datos, altas y modificaciones de datos maestros (artículos, proveedores, sucursales, clientes), validaciones, cargas e integraciones de datos, y tableros o reportes de datos.\nTodo lo que quede fuera de este ámbito (finanzas, recursos humanos, temas legales, soporte informático general) no lo resolvés ni lo registrás.\n\n# OBJETIVO\n1. Entender el pedido recibido y detectar el dato, el sistema o el proceso involucrado.\n2. Clasificar el caso con un tipo (Incidente de calidad de datos, Alta o modificación de maestro, Consulta de proceso, Pedido de reporte) y una prioridad (Alta, Media o Baja).\n3. Registrar el caso en la planilla de seguimiento usando la herramienta Registrar_Caso_DataGovernance, una sola vez por caso.\n4. Responder al solicitante con un resumen breve: tipo, prioridad y próximo paso.\n\n# REGLAS Y ESCALAMIENTO\nReglas:\n- Respondé en español, con tono profesional y claro, y con frases breves.\n- No inventes datos. Si falta información crítica para clasificar, hacé una única pregunta antes de registrar.\n- Registrá cada caso una sola vez. No repitas la herramienta para el mismo caso.\n- Usá un máximo de 5 pasos de razonamiento por pedido.\n\nAcciones que NO tenés permitidas:\n- Modificar, borrar o aprobar datos maestros.\n- Editar o eliminar registros ya cargados en la planilla.\n- Otorgar accesos a sistemas o compartir información confidencial del cliente.\n- Emitir opiniones legales, contables o financieras.\n\nEscalamiento:\n- Prioridad Alta (afecta ventas, stock, precios o facturación, o impacta en más de una sucursal): registrá el caso con escalamiento \"Líder de Consultoría\" e indicá al solicitante que será atendido con urgencia.\n- Pedido fuera de ámbito: no lo registres, explicá el motivo y sugerí derivarlo al área correspondiente.\n- Duda sobre el ámbito o la prioridad: escalá al \"Líder de Consultoría\" en lugar de decidir por tu cuenta.",
+          "maxIterations": 6,
+          "returnIntermediateSteps": true
+        }
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Agente Triage Data Governance",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        320,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "id"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        200,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Registra un caso nuevo como una fila en la planilla de seguimiento de Data Governance. Esta herramienta agrega una fila; no lee, no edita ni borra filas existentes.\n\nUSALA de manera autónoma cuando se cumplan TODAS estas condiciones:\n1. El mensaje del usuario describe un pedido concreto dentro del ámbito de Data Governance: un error o inconsistencia en datos (por ejemplo precios, códigos de artículo o proveedores duplicados), un pedido de alta o modificación de un dato maestro, una consulta sobre un proceso de validación o carga, o un pedido de reporte o tablero de datos.\n2. Ya podés determinar el tipo de caso, la prioridad y el dominio del dato afectado.\n3. El caso todavía no fue registrado en esta conversación.\n\nNO LA USES cuando:\n- El usuario solo saluda, agradece o hace una pregunta general que no requiere seguimiento.\n- Falta información crítica para clasificar el caso (primero preguntá al usuario).\n- El pedido está fuera del ámbito de Data Governance (finanzas, recursos humanos, temas legales, soporte informático general).\n- Ya registraste este mismo caso (evitá duplicados).\n\nCompletá los campos así:\n- solicitante: nombre o área de quien hace el pedido; si no lo informó, escribí \"No informado\".\n- tipo_caso: uno de Incidente de calidad de datos, Alta o modificación de maestro, Consulta de proceso, Pedido de reporte.\n- dominio_dato: uno de Artículos, Proveedores, Sucursales, Clientes, Precios, Stock u Otro.\n- descripcion: resumen del pedido en una o dos frases, sin datos sensibles.\n- prioridad: Alta, Media o Baja según el impacto en ventas, stock, precios, facturación y cantidad de sucursales.\n- accion_recomendada: el próximo paso sugerido para el equipo.\n- escalamiento: \"Líder de Consultoría\" si la prioridad es Alta; en otro caso \"No requiere\".",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REEMPLAZAR_POR_ID_DE_TU_GOOGLE_SHEET",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fecha_hora": "={{ $now.toFormat('yyyy-MM-dd HH:mm') }}",
+            "solicitante": "={{ $fromAI('solicitante', 'Nombre o área de quien hace el pedido', 'string') }}",
+            "tipo_caso": "={{ $fromAI('tipo_caso', 'Tipo de caso: Incidente de calidad de datos, Alta o modificación de maestro, Consulta de proceso o Pedido de reporte', 'string') }}",
+            "dominio_dato": "={{ $fromAI('dominio_dato', 'Dominio del dato: Artículos, Proveedores, Sucursales, Clientes, Precios, Stock u Otro', 'string') }}",
+            "descripcion": "={{ $fromAI('descripcion', 'Resumen del pedido en una o dos frases', 'string') }}",
+            "prioridad": "={{ $fromAI('prioridad', 'Alta, Media o Baja', 'string') }}",
+            "accion_recomendada": "={{ $fromAI('accion_recomendada', 'Próximo paso sugerido para el equipo', 'string') }}",
+            "escalamiento": "={{ $fromAI('escalamiento', 'Líder de Consultoría si la prioridad es Alta; en otro caso No requiere', 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fecha_hora",
+              "displayName": "fecha_hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "solicitante",
+              "displayName": "solicitante",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_caso",
+              "displayName": "tipo_caso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "dominio_dato",
+              "displayName": "dominio_dato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "descripcion",
+              "displayName": "descripcion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "prioridad",
+              "displayName": "prioridad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "accion_recomendada",
+              "displayName": "accion_recomendada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "escalamiento",
+              "displayName": "escalamiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Registrar_Caso_DataGovernance",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        460,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "REEMPLAZAR_POR_TU_EMAIL",
+        "subject": "Tarea completada - Log de auditoría Agente Triage Data Governance",
+        "message": "=Tarea completada: el agente de Triage de Data Governance finalizó su ejecución.\n\nMENSAJE RECIBIDO:\n{{ $('Chat Trigger').item.json.chatInput }}\n\nRESPUESTA FINAL DEL AGENTE:\n{{ $json.output }}\n\nLOG DE EJECUCIÓN (pasos intermedios y herramientas usadas):\n{{ JSON.stringify($json.intermediateSteps, null, 2) }}\n\nFecha y hora: {{ $now.toFormat('yyyy-MM-dd HH:mm') }}\nEstado: Tarea completada",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Log de Auditoría (Gmail)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agente Triage Data Governance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Triage Data Governance",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar_Caso_DataGovernance": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Triage Data Governance",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Triage Data Governance": {
+      "main": [
+        [
+          {
+            "node": "Log de Auditoría (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
