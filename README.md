@@ -42,6 +42,16 @@ Chat Trigger → AI Agent (Tools Agent) → Gmail (log de auditoría)
 
 En todas las corridas los nodos quedaron en verde y llegó el mail de auditoría.
 
+## Checkpoint 4: Integraciones avanzadas (Módulo 4)
+
+**Archivo:** [`m4/checkpoint4_cristian_gonzalez.json`](m4/checkpoint4_cristian_gonzalez.json) · **Documentación completa:** [`m4/README.md`](m4/README.md)
+
+Se parte del Manager del Módulo 3 y se le suma una segunda entrada por mail que usa el mismo Router, la misma memoria y los mismos Workers que el chat. Tres integraciones reales con OAuth2 y mínimo privilegio: **Zoho CRM** (Look up antes de Create), **Gmail** (solo Create Draft: el flujo nunca envía) y **Slack** (aviso con payload mínimo). Un IF anti auto-reply determinista, justo después del Gmail Trigger, evita el bucle de respuestas automáticas.
+
+- Importación y credenciales: [`m4/README.md`, sección 0](m4/README.md#0-resumen-e-importación)
+- Tabla de mapeo consigna ↔ implementación: [sección 1](m4/README.md#1-tabla-de-mapeo-consigna--implementación)
+- Pruebas de regresión T1 a T14: [sección 7](m4/README.md#7-paso-9--pruebas-de-regresión-manuales)
+
 ## Evolución del proyecto
 
 Este flujo es la base del proyecto integrador. En cada módulo se importa el JSON anterior y se agregan solo los nodos nuevos: multi-agente (M2), memoria (M3), integraciones (M4), RAG (M5), voz (M6), hasta el proyecto final (M11).

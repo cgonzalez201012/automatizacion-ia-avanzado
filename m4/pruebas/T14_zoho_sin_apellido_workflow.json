@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c1f0a3de-7a53-4b21-9d1a-0b6f2a9e1111"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.zohoapis.com/crm/v8/Contacts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"data\":[{\"First_Name\":\"Prueba\",\"Email\":\"sinapellido@prueba.example\"}]}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "name": "TEST T14 - Create sin Last_Name",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "c1f0a3de-7a53-4b21-9d1a-0b6f2a9e2222",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "hrL7Nr3bn3W4cxAi",
+          "name": "Zoho CRM - DBPM Retail Demo"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "TEST T14 - Create sin Last_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

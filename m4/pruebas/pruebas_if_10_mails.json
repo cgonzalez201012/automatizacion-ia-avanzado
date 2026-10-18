@@ -1,0 +1,225 @@
+[
+  {
+    "id": "t01-normal",
+    "threadId": "t01-normal",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t02-autoreply-en",
+    "threadId": "t02-autoreply-en",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Auto-reply: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Auto-reply: Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t03-autoreply-es",
+    "threadId": "t03-autoreply-es",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Respuesta automática: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Respuesta automática: Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t04-out-of-office",
+    "threadId": "t04-out-of-office",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Out of office: vuelvo el lunes"
+    },
+    "subject": "Out of office: vuelvo el lunes",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t05-undeliverable",
+    "threadId": "t05-undeliverable",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Undeliverable: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Undeliverable: Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t06-noreply",
+    "threadId": "t06-noreply",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Novedades de la semana"
+    },
+    "subject": "Novedades de la semana",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "no-reply@tienda.example",
+          "name": ""
+        }
+      ]
+    }
+  },
+  {
+    "id": "t07-mailer-daemon",
+    "threadId": "t07-mailer-daemon",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "MAILER-DAEMON@googlemail.example",
+          "name": ""
+        }
+      ]
+    }
+  },
+  {
+    "id": "t08-header-auto",
+    "threadId": "t08-header-auto",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Alta de proveedor Textil Norte SRL",
+      "auto-submitted": "Auto-Submitted: auto-replied"
+    },
+    "subject": "Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t09-propia-casilla",
+    "threadId": "t09-propia-casilla",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655",
+      "SENT"
+    ],
+    "headers": {
+      "subject": "Subject: Alta de proveedor Textil Norte SRL"
+    },
+    "subject": "Alta de proveedor Textil Norte SRL",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "soporte@dbpm-retail-demo.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "t10-control-pasa",
+    "threadId": "t10-control-pasa",
+    "labelIds": [
+      "UNREAD",
+      "INBOX",
+      "Label_4190950167288927655"
+    ],
+    "headers": {
+      "subject": "Subject: Consulta sobre proveedores automáticos",
+      "auto-submitted": "Auto-Submitted: no"
+    },
+    "subject": "Consulta sobre proveedores automáticos",
+    "text": "Hola, necesito dar de alta un proveedor nuevo.",
+    "from": {
+      "value": [
+        {
+          "address": "compras@textilnorte.example",
+          "name": "Compras Demo"
+        }
+      ]
+    }
+  }
+]

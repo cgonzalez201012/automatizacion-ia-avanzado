@@ -1,0 +1,47 @@
+[
+  {
+    "id": "FICTICIO-T11-0001",
+    "threadId": "FICTICIO-T11-0001",
+    "labelIds": [
+      "UNREAD",
+      "Label_4190950167288927655",
+      "IMPORTANT",
+      "CATEGORY_PERSONAL",
+      "INBOX"
+    ],
+    "sizeEstimate": 3000,
+    "headers": {
+      "from": "From: Logística Demo <logistica@norteexpress.example>",
+      "to": "To: soporte@dbpm-retail-demo.example",
+      "subject": "Subject: Consulta sobre el procedimiento de excepciones de precios",
+      "date": "Date: Sat, 17 Oct 2026 10:34:36 -0300",
+      "content-type": "Content-Type: text/plain; charset=UTF-8",
+      "mime-version": "MIME-Version: 1.0"
+    },
+    "html": "<div>Hola, ¿cuál es el procedimiento para pedir una excepción de precios en el sistema? ¿Quién la aprueba y en qué plazo? Gracias, Logística Demo</div>",
+    "text": "Hola, ¿cuál es el procedimiento para pedir una excepción de precios en el sistema? ¿Quién la aprueba y en qué plazo? Gracias, Logística Demo",
+    "textAsHtml": "<p>Hola, ¿cuál es el procedimiento para pedir una excepción de precios en el sistema? ¿Quién la aprueba y en qué plazo? Gracias, Logística Demo</p>",
+    "subject": "Consulta sobre el procedimiento de excepciones de precios",
+    "date": "2026-10-17T13:34:36.000Z",
+    "to": {
+      "value": [
+        {
+          "address": "soporte@dbpm-retail-demo.example",
+          "name": "Soporte"
+        }
+      ],
+      "html": "",
+      "text": "soporte@dbpm-retail-demo.example"
+    },
+    "from": {
+      "value": [
+        {
+          "address": "logistica@norteexpress.example",
+          "name": "Logística Demo"
+        }
+      ],
+      "html": "",
+      "text": "Logística Demo <logistica@norteexpress.example>"
+    }
+  }
+]
