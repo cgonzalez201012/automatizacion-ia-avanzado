@@ -1,8 +1,9 @@
 # Checkpoint 4 · Sincronización del Cerebro Agéntico con Ecosistemas de Negocio
 
-**Alumno:** Cristian González · **Curso:** Automatización x IA – Avanzado (Coderhouse) · **Módulo 4:** Integraciones Avanzadas e Interconexión de Sistemas
-**Entregable:** [`checkpoint4_cristian_gonzalez.json`](checkpoint4_cristian_gonzalez.json) (workflow de n8n 2.42.6, inactivo, sin datos fijados, sin secretos)
-**Empresa de ejemplo (ficticia):** DBPM Retail Demo. Todos los remitentes, contactos y dominios de las pruebas son inventados (dominios `.example`).
+- **Alumno:** Cristian González
+- **Curso:** Automatización x IA – Avanzado (Coderhouse) · **Módulo 4:** Integraciones Avanzadas e Interconexión de Sistemas
+- **Entregable:** [`checkpoint4_cristian_gonzalez.json`](checkpoint4_cristian_gonzalez.json) (workflow de n8n 2.42.6, inactivo, sin datos fijados, sin secretos)
+- **Empresa de ejemplo (ficticia):** DBPM Retail Demo. Todos los remitentes, contactos y dominios de las pruebas son inventados (dominios `.example`).
 
 > Este README es material de apoyo. El entregable es el JSON; acá se explica qué contiene, por qué se decidió cada cosa y cómo se probó. Está ordenado por la rúbrica del módulo (40 % / 35 % / 25 %) y, dentro de cada criterio, por los pasos del programa. **Todos los textos de nodos, prompts, expresiones y condiciones están extraídos del JSON exportado con un script** (nunca tipeados a mano); las capturas son vista cercana de apoyo.
 
