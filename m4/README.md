@@ -55,25 +55,25 @@ La columna "Nombre en la consigna" usa los términos del programa del módulo; l
 
 | Consigna (paso / pieza del molde) | Nombre en la consigna | Nombre real en el flujo | Dónde verlo |
 |---|---|---|---|
-| Paso 1 · tres conectores nativos | CRM (HubSpot o Salesforce) | `Zoho Look up`, `Zoho Update`, `Zoho Create` (nodo HTTP Request con credencial OAuth2 genérica; el nodo nativo de Zoho no permite mínimo privilegio, ver §4.2) | §4.2 · `m4_44` `m4_45` |
-| Paso 1 | Casilla de soporte (Gmail) | `Gmail Trigger` y `Gmail Create Draft` (nodos nativos) | §5.1 · `m4_41` `m4_42` |
-| Paso 1 | Canal del equipo (Slack) | `Avisar al Líder de Consultoría` y `Avisar al equipo (email procesado)` (nodos nativos) | §6.3 |
-| Paso 2 · OAuth2 con semáforo verde | Credenciales en verde | `Gmail - DBPM Retail Demo`, `Slack - DBPM Retail Demo`, `Zoho CRM - DBPM Retail Demo` | §4.1 · `m4_04` `m4_09` `m4_10` |
-| Paso 3 · lectura y escritura con scopes mínimos | Mínimo privilegio | Gmail `gmail.readonly` + `gmail.compose`; Slack `chat:write`; Zoho 4 scopes de Contactos + dominio permitido | §4.3 · `m4_02` `m4_05` `m4_11` |
-| Paso 4 · IF inmediatamente después del trigger | ① IF "¿es auto-reply?" | `IF anti auto-reply` (conectado directo a `Gmail Trigger`) | §5.2 · `m4_47` `m4_48` |
-| Paso 5 · condición determinista | Auto-reply, Out of office, Undeliverable, `no-reply@` | 23 condiciones sin IA (asuntos en inglés y español, remitentes, encabezados, etiqueta `SENT`) | §5.2 |
-| Paso 6 · Look up antes del Create (evita el 409) | ② Look up (Sí = Update, No = Create) | `Zoho Look up` → `IF existe?` → `Zoho Update` / `Zoho Create` | §5.4 · `m4_44` `m4_46` |
-| Error 409 (duplicado, caso HubSpot) | 409 | En Zoho el equivalente documentado es `DUPLICATE_DATA` (HTTP 400), pero en la Free Edition **no se dispara por Email** (prueba T13); la barrera es el Look up | §5.4 · `m4_39` |
-| Error 400 (payload mal formado) | 400 | `MANDATORY_NOT_FOUND` si falta `Last_Name` (prueba T14); se previene con `Set limpieza CRM` + `IF datos válidos?` | §5.5 · `m4_40` |
-| Paso 7 · Gmail solo con Create Draft (HITL) | ③ Create Draft | `Gmail Create Draft` (recurso `draft`, operación `create` explícita; sin ninguna operación de envío en el JSON) | §6.1 · `m4_42` `m4_27` |
-| Paso 8 · Set / filtro antes de Slack | Limpiar payloads pesados y binarios | `Set limpieza Slack (email)` y `Limpiar payload para Slack` (más `Set limpieza CRM` antes de Zoho) | §5.5 · §6.3 · `m4_43` |
-| Paso 9 · test de regresión manual | Test step / Execute Workflow en cada nodo | Pruebas T1 a T14 | §7 |
-| Molde · Trigger email | Trigger email | `Gmail Trigger` | §5.1 |
+| Paso 1 · tres conectores nativos | CRM (HubSpot o Salesforce) | `Zoho Look up`, `Zoho Update`, `Zoho Create` (nodo HTTP Request con credencial OAuth2 genérica; el nodo nativo de Zoho no permite mínimo privilegio, ver sección 4.2) | sección 4.2 · `m4_44` `m4_45` |
+| Paso 1 | Casilla de soporte (Gmail) | `Gmail Trigger` y `Gmail Create Draft` (nodos nativos) | sección 5.1 · `m4_41` `m4_42` |
+| Paso 1 | Canal del equipo (Slack) | `Avisar al Líder de Consultoría` y `Avisar al equipo (email procesado)` (nodos nativos) | sección 6.3 |
+| Paso 2 · OAuth2 con semáforo verde | Credenciales en verde | `Gmail - DBPM Retail Demo`, `Slack - DBPM Retail Demo`, `Zoho CRM - DBPM Retail Demo` | sección 4.1 · `m4_04` `m4_09` `m4_10` |
+| Paso 3 · lectura y escritura con scopes mínimos | Mínimo privilegio | Gmail `gmail.readonly` + `gmail.compose`; Slack `chat:write`; Zoho 4 scopes de Contactos + dominio permitido | sección 4.3 · `m4_02` `m4_05` `m4_11` |
+| Paso 4 · IF inmediatamente después del trigger | ① IF "¿es auto-reply?" | `IF anti auto-reply` (conectado directo a `Gmail Trigger`) | sección 5.2 · `m4_47` `m4_48` |
+| Paso 5 · condición determinista | Auto-reply, Out of office, Undeliverable, `no-reply@` | 23 condiciones sin IA (asuntos en inglés y español, remitentes, encabezados, etiqueta `SENT`) | sección 5.2 |
+| Paso 6 · Look up antes del Create (evita el 409) | ② Look up (Sí = Update, No = Create) | `Zoho Look up` → `IF existe?` → `Zoho Update` / `Zoho Create` | sección 5.4 · `m4_44` `m4_46` |
+| Error 409 (duplicado, caso HubSpot) | 409 | En Zoho el equivalente documentado es `DUPLICATE_DATA` (HTTP 400), pero en la Free Edition **no se dispara por Email** (prueba T13); la barrera es el Look up | sección 5.4 · `m4_39` |
+| Error 400 (payload mal formado) | 400 | `MANDATORY_NOT_FOUND` si falta `Last_Name` (prueba T14); se previene con `Set limpieza CRM` + `IF datos válidos?` | sección 5.5 · `m4_40` |
+| Paso 7 · Gmail solo con Create Draft (HITL) | ③ Create Draft | `Gmail Create Draft` (recurso `draft`, operación `create` explícita; sin ninguna operación de envío en el JSON) | sección 6.1 · `m4_42` `m4_27` |
+| Paso 8 · Set / filtro antes de Slack | Limpiar payloads pesados y binarios | `Set limpieza Slack (email)` y `Limpiar payload para Slack` (más `Set limpieza CRM` antes de Zoho) | sección 5.5 · sección 6.3 · `m4_43` |
+| Paso 9 · test de regresión manual | Test step / Execute Workflow en cada nodo | Pruebas T1 a T14 | sección 7 |
+| Molde · Trigger email | Trigger email | `Gmail Trigger` | sección 5.1 |
 | Molde · AI Agent | AI Agent | `Router de Triage` (el mismo agente del M1 a M3, con memoria) | Anexo A |
-| Molde · ④ Set (From, Subject, BodyText) | Campos `From`, `Subject`, `BodyText` | `Normalizar email`: `remitente_email`/`remitente_nombre` (From), `asunto` (Subject), `chatInput` = "Asunto + cuerpo limpio" (BodyText) | §5.3 |
-| Molde · "verifica que email no esté vacío" | Email no vacío | `IF datos válidos?` (3 condiciones) | §5.5 |
-| Fuente Única de Verdad | Lookup antes de crear | `Zoho Look up` antes de `Zoho Create` | §5.4 |
-| Gobernanza / HITL | Aprobación humana antes del envío | Borrador en Gmail + aviso que declara "pendiente de revisión humana" | §6 |
+| Molde · ④ Set (From, Subject, BodyText) | Campos `From`, `Subject`, `BodyText` | `Normalizar email`: `remitente_email`/`remitente_nombre` (From), `asunto` (Subject), `chatInput` = "Asunto + cuerpo limpio" (BodyText) | sección 5.3 |
+| Molde · "verifica que email no esté vacío" | Email no vacío | `IF datos válidos?` (3 condiciones) | sección 5.5 |
+| Fuente Única de Verdad | Lookup antes de crear | `Zoho Look up` antes de `Zoho Create` | sección 5.4 |
+| Gobernanza / HITL | Aprobación humana antes del envío | Borrador en Gmail + aviso que declara "pendiente de revisión humana" | sección 6 |
 
 ---
 
@@ -81,9 +81,9 @@ La columna "Nombre en la consigna" usa los términos del programa del módulo; l
 
 | Criterio (peso) | Qué se muestra | Dónde está |
 |---|---|---|
-| **Conectividad segura y mínimo privilegio (40 %)** | 3 integraciones reales (Zoho, Gmail, Slack) con OAuth2 en verde; scopes mínimos documentados por plataforma; pruebas negativas con error real (Gmail 403 `insufficient_scope`, Zoho 401 `OAUTH_SCOPE_MISMATCH`, Slack `missing_scope`); credencial de Zoho restringida a un solo dominio | §4 · capturas `m4_02` a `m4_11` · tipos de credencial dentro del JSON |
-| **Contención de bucles y mitigación de errores (35 %)** | `IF anti auto-reply` inmediatamente después del trigger (23 condiciones, probado con 10 mails y con un hallazgo corregido); Look up antes del Create; Sets de limpieza; manejo de errores nodo por nodo; `Max Emails per Poll = 1` | §5 · capturas `m4_18` a `m4_21`, `m4_29` a `m4_31`, `m4_33` a `m4_35`, `m4_39` a `m4_48` |
-| **Gobernanza operativa e interfaz HITL (25 %)** | Gmail solo con Create Draft (borrador en el hilo, sin enviar); aviso a Slack que dice "pendiente de revisión humana"; el aviso de derivación humana pasó de Gmail (envío) a Slack; ninguna operación de envío en todo el JSON | §6 · capturas `m4_26` a `m4_28`, `m4_36` a `m4_38` · auditoría del JSON (§9) |
+| **Conectividad segura y mínimo privilegio (40 %)** | 3 integraciones reales (Zoho, Gmail, Slack) con OAuth2 en verde; scopes mínimos documentados por plataforma; pruebas negativas con error real (Gmail 403 `insufficient_scope`, Zoho 401 `OAUTH_SCOPE_MISMATCH`, Slack `missing_scope`); credencial de Zoho restringida a un solo dominio | sección 4 · capturas `m4_02` a `m4_11` · tipos de credencial dentro del JSON |
+| **Contención de bucles y mitigación de errores (35 %)** | `IF anti auto-reply` inmediatamente después del trigger (23 condiciones, probado con 10 mails y con un hallazgo corregido); Look up antes del Create; Sets de limpieza; manejo de errores nodo por nodo; `Max Emails per Poll = 1` | sección 5 · capturas `m4_18` a `m4_21`, `m4_29` a `m4_31`, `m4_33` a `m4_35`, `m4_39` a `m4_48` |
+| **Gobernanza operativa e interfaz HITL (25 %)** | Gmail solo con Create Draft (borrador en el hilo, sin enviar); aviso a Slack que dice "pendiente de revisión humana"; el aviso de derivación humana pasó de Gmail (envío) a Slack; ninguna operación de envío en todo el JSON | sección 6 · capturas `m4_26` a `m4_28`, `m4_36` a `m4_38` · auditoría del JSON (sección 9) |
 
 ---
 
@@ -516,10 +516,10 @@ Orden: `Zoho Look up` (GET por email) → `IF existe?` → **sí:** `Zoho Update
 *Captura m4_39 · T13: duplicado en Zoho*
 
 
-**Límite del índice de búsqueda.** Zoho indexa los registros con una pequeña demora: una búsqueda hecha justo después de crear o editar un contacto puede no encontrarlo. Como el Email no es único (arriba), si el Look up no viera un contacto recién creado, Zoho aceptaría un segundo alta y quedaría un duplicado: no hay red de seguridad del lado de Zoho. Mitigaciones del diseño: cada ejecución procesa un solo mail (§5.1) y el trigger sondea cada 5 minutos, de modo que dos altas del mismo remitente solo chocarían si el índice tardara más que un sondeo; en T5 el Look up ya encontraba el contacto 41 minutos después de crearlo. La ventana de segundos **no se probó**. Mejora futura (solo idea, no implementada ni probada): usar el endpoint de upsert de Zoho con el Email como campo de duplicado.
+**Límite del índice de búsqueda.** Zoho indexa los registros con una pequeña demora: una búsqueda hecha justo después de crear o editar un contacto puede no encontrarlo. Como el Email no es único (arriba), si el Look up no viera un contacto recién creado, Zoho aceptaría un segundo alta y quedaría un duplicado: no hay red de seguridad del lado de Zoho. Mitigaciones del diseño: cada ejecución procesa un solo mail (sección 5.1) y el trigger sondea cada 5 minutos, de modo que dos altas del mismo remitente solo chocarían si el índice tardara más que un sondeo; en T5 el Look up ya encontraba el contacto 41 minutos después de crearlo. La ventana de segundos **no se probó**. Mejora futura (solo idea, no implementada ni probada): usar el endpoint de upsert de Zoho con el Email como campo de duplicado.
 
 ### 5.5 Pasos 8 (CRM) y "email no vacío" · Sets de limpieza y validación
-Antes de tocar Zoho, `Set limpieza CRM` deja solo lo necesario y `IF datos válidos?` corta el flujo si algo falta. Así se evita el error 400 por payload mal formado. El asunto llega al CRM con sus caracteres tal cual (Zoho lo muestra como texto; en `m4_34` se ve el asunto hostil de T10 en la descripción del contacto): el saneo de `<` y `>` se aplica solo hacia Slack (§6.3), que es donde esos caracteres generan menciones y enlaces.
+Antes de tocar Zoho, `Set limpieza CRM` deja solo lo necesario y `IF datos válidos?` corta el flujo si algo falta. Así se evita el error 400 por payload mal formado. El asunto llega al CRM con sus caracteres tal cual (Zoho lo muestra como texto; en `m4_34` se ve el asunto hostil de T10 en la descripción del contacto): el saneo de `<` y `>` se aplica solo hacia Slack (sección 6.3), que es donde esos caracteres generan menciones y enlaces.
 
 **Nodo `Set limpieza CRM`** (9 campos, contrato E):
 
@@ -630,7 +630,7 @@ Cada llamada externa define qué pasa si falla, para que un error no se pierda n
 | `Zoho Look up` | `retryOnFail: true`, `maxTries: 3`, `waitBetweenTries: 2000` ms, `alwaysOutputData: true`, `onError: continueErrorOutput` | Reintenta 3 veces con 2 segundos de espera. Una búsqueda vacía es el caso normal de un remitente nuevo (por eso `alwaysOutputData`). Si falla del todo, su **salida de error** va directo al borrador: no se crea ni actualiza nada en el CRM, el mail igual recibe su borrador y Slack avisa "ERROR en la búsqueda (no se creó nada)" |
 | `Zoho Create` / `Zoho Update` | `options.response.response.neverError: true` | El error de Zoho no corta la ejecución; se lee su código y Slack lo informa ("ERROR al crear (código)" / "ERROR al actualizar (código)") |
 | `Gmail Create Draft` | `onError: continueRegularOutput` | Continúa aunque falle; el aviso dice "Borrador: ERROR al crear" |
-| `IF datos válidos?` (false) | ver §5.5 | Salta Zoho y Gmail y avisa por Slack |
+| `IF datos válidos?` (false) | ver sección 5.5 | Salta Zoho y Gmail y avisa por Slack |
 | `Ejecutar Worker 1/2` | `onError: continueErrorOutput` → `Consolidar - Contingencia` | El usuario recibe un mensaje de contingencia y el caso queda en el log con `status = error` |
 | Slack (`Set limpieza Slack` / `Limpiar payload`) | `<` y `>` eliminados | Un asunto hostil no genera menciones ni enlaces |
 
@@ -659,7 +659,7 @@ Settings > On Error: continueRegularOutput
 ```
 
 
-La operación `create` está **escrita de forma explícita** en el JSON (`parameters.operation`). n8n omite al exportar los parámetros que valen lo mismo que su valor por defecto, y `create` es el valor por defecto del recurso `draft`; pero ese recurso tiene cuatro operaciones (Create, Delete, Get y Get Many) y, por la lección del IF anti auto-reply (§5.2: no confiar en un valor por defecto), la garantía no se dejó librada a lo que n8n omite. Según el código fuente de n8n (`DraftDescription.ts`), ninguna de las cuatro operaciones del recurso `draft` envía un mail; el envío existe solo en el recurso `message` (Send, Reply), que no aparece en ningún nodo de este JSON.
+La operación `create` está **escrita de forma explícita** en el JSON (`parameters.operation`). n8n omite al exportar los parámetros que valen lo mismo que su valor por defecto, y `create` es el valor por defecto del recurso `draft`; pero ese recurso tiene cuatro operaciones (Create, Delete, Get y Get Many) y, por la lección del IF anti auto-reply (sección 5.2: no confiar en un valor por defecto), la garantía no se dejó librada a lo que n8n omite. Según el código fuente de n8n (`DraftDescription.ts`), ninguna de las cuatro operaciones del recurso `draft` envía un mail; el envío existe solo en el recurso `message` (Send, Reply), que no aparece en ningún nodo de este JSON.
 
 ![Gmail Create Draft: configuración](capturas/m4_42_gmail_create_draft_config.png)
 *Captura m4_42 · Gmail Create Draft: configuración*
@@ -768,7 +768,7 @@ Todas las corridas son **manuales** (Execute workflow / Test step), en la instan
 | T10 | Mail con HTML largo, historial citado y asunto hostil | Mismo caso: mail con HTML de 6.391 caracteres y texto plano de 6.323 → texto del caso de 2.067 (`Asunto: ` + asunto + cuerpo recortado a 2.000); asunto `Urgente <!channel> <@U123> [x] alta de proveedor Lana Sur` → en Slack `Urgente !channel @U123 [x] alta de proveedor Lana Sur`, sin mención y sin cuerpo | Verde (sin adjuntos reales) | `m4_35` |
 | T11 | Mail derivado a humano | Caso `T-20261018-163642`, `logistica@norteexpress.example`, `CONSULTA_PROCESO` 0,95: dos avisos de Slack (derivación y mail procesado), borrador sin enviar | Verde | `m4_36` `m4_37` `m4_38` |
 | T12 | Mail desde la propia casilla | Descartado por la condición de etiqueta `SENT` (`t09`) | Verde, con datos fijados | `m4_18` a `m4_20` |
-| T13 | Error forzado: Create con un email que ya existe | **No dio error**: Zoho aceptó el duplicado ("Logística Demo" ×2). Hallazgo documentado en §5.4 | Hallazgo | `m4_39` |
+| T13 | Error forzado: Create con un email que ya existe | **No dio error**: Zoho aceptó el duplicado ("Logística Demo" ×2). Hallazgo documentado en sección 5.4 | Hallazgo | `m4_39` |
 | T14 | Error forzado: Create sin `Last_Name` | `MANDATORY_NOT_FOUND` (código real de Zoho), que el flujo previene con `Set limpieza CRM` + `IF datos válidos?` | Verde | `m4_40` |
 
 **Evidencia visual de las corridas de mail** (T4: lienzo y contacto creado; T5: lienzo con `Zoho Update` y el mismo contacto actualizado; T9 y T10: lienzo y contacto sin nombre):
@@ -825,17 +825,17 @@ Archivos de prueba en [`pruebas/`](pruebas/): `pruebas_if_10_mails.json`, `pin_T
 **Limitaciones (se declaran, no se esconden):**
 - El trigger de Gmail es **sondeo cada 5 minutos**, no tiempo real. El sondeo real de punta a punta con un mail etiquetado no se probó: T4 a T11 usaron el mail fijado en el trigger.
 - La memoria `Simple Memory` es volátil (heredado del M3); la memoria consolidada vive en Airtable.
-- El índice de búsqueda de Zoho tiene demora y no se probó la ventana de segundos (§5.4).
+- El índice de búsqueda de Zoho tiene demora y no se probó la ventana de segundos (sección 5.4).
 - Zoho (Free Edition) **no rechaza** contactos con el mismo Email: la deduplicación depende solo del Look up.
-- `gmail.compose` permite enviar; el control de no enviar es de diseño (§4.3).
+- `gmail.compose` permite enviar; el control de no enviar es de diseño (sección 4.3).
 - Slack usa token de usuario: los avisos salen a nombre de quien autoriza.
 - El proyecto de Google Cloud está en modo de prueba: el token de actualización de Gmail puede vencer a los 7 días y habría que reconectar la credencial.
 - Un mail que se procese dos veces genera dos borradores (no hay deduplicación de borradores por hilo).
 - Sin `gmail.modify` no se marca el mail como leído; la no repetición depende del cursor del trigger.
 - El IF anti auto-reply se probó con los 10 mails de prueba, no con un auto-reply real recibido por Gmail.
-- Los caminos de error de Zoho/Gmail (§5.6) se probaron solo offline, salvo T14.
+- Los caminos de error de Zoho/Gmail (sección 5.6) se probaron solo offline, salvo T14.
 - El `case_id` (heredado del M3) toma la hora en una zona horaria distinta de la de Buenos Aires (una hora de diferencia con Zoho y Slack); no afecta a la lógica.
-- Al importar en otra instancia hay que volver a elegir los dos workflows en los nodos `Ejecutar Worker 1/2` (§0, punto 4).
+- Al importar en otra instancia hay que volver a elegir los dos workflows en los nodos `Ejecutar Worker 1/2` (sección 0, punto 4).
 
 **Costo cero.** Ninguna plataforma tiene costo para este módulo:
 
