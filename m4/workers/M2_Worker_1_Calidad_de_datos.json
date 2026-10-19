@@ -1,0 +1,260 @@
+{
+  "name": "M2 - Worker 1 - Calidad de datos",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "case_id"
+            },
+            {
+              "name": "original_input"
+            },
+            {
+              "name": "intent"
+            },
+            {
+              "name": "confidence",
+              "type": "number"
+            },
+            {
+              "name": "risk"
+            },
+            {
+              "name": "dominio_dato"
+            },
+            {
+              "name": "prioridad"
+            },
+            {
+              "name": "solicitante"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f8aef61-11b0-420f-9d90-65f783f904fd",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Caso a analizar:\nPedido original: {{ $json.original_input }}\nTipo de caso: {{ $json.intent }}\nDominio del dato: {{ $json.dominio_dato }}\nPrioridad: {{ $json.prioridad }}\nSolicitante: {{ $json.solicitante }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "# ROL Sos el Worker de Calidad de Datos y Reportes de DBPM - Consulting, para un cliente del sector retail. Recibís un caso ya clasificado y hacés una única tarea: analizarlo y proponer el próximo paso. # ÁMBITO Incidentes de calidad de datos (precios, artículos, proveedores, stock, sucursales, clientes) y pedidos de reporte o tablero de datos. # OBJETIVO 1. Diagnosticar en una o dos frases el problema o lo que se pide. 2. Proponer una acción recomendada concreta para el equipo de Data Governance. 3. Indicar requiere_escalamiento en true si la prioridad es Alta. # REGLAS - Respondé solo con el JSON pedido. - No inventes datos que no estén en el caso. - No modifiques ni apruebes datos maestros. - Si el caso no es de tu ámbito, devolvé diagnostico \"FUERA_DE_COMPETENCIA\" y requiere_escalamiento true."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "80dc06fe-4005-4c01-8efd-ea00b1929f4e",
+      "name": "Basic LLM Chain",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        224,
+        208
+      ],
+      "id": "23f1eeac-3fe8-4120-9504-ec4d9d001781",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "p2pIlqL4D8TT5hbK",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"diagnostico\": \"Los precios de un artículo figuran en cero en varias sucursales\",\n  \"accion_recomendada\": \"Revisar la última carga de precios y corregir los valores en el maestro\",\n  \"requiere_escalamiento\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        208
+      ],
+      "id": "6b97c5fd-9924-4d5f-ba21-6e09eb8282f7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a6592104-7d14-4832-b5dd-e9e1dad78676",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "5676d0c0-c8f9-4db6-99b4-aa0492075024",
+              "name": "worker",
+              "value": "calidad_datos",
+              "type": "string"
+            },
+            {
+              "id": "6c093d2e-8c5e-47fd-bd1e-a8a67c5c2686",
+              "name": "data.diagnostico",
+              "value": "={{ $json.output.diagnostico }}",
+              "type": "string"
+            },
+            {
+              "id": "287a072b-b831-4472-ae0d-1901581a5548",
+              "name": "=data.accion_recomendada",
+              "value": "={{ $json.output.accion_recomendada }}",
+              "type": "string"
+            },
+            {
+              "id": "7ec2122c-0934-4e65-a62f-67211f5815aa",
+              "name": "=data.requiere_escalamiento",
+              "value": "={{ $json.output.requiere_escalamiento }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        592,
+        -96
+      ],
+      "id": "825a1d64-6bb2-43c5-82f8-ccaa8f63ada1",
+      "name": "Contrato de salida"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90192dc7-fae9-4619-b190-b4c717a47205",
+              "name": "status",
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "id": "a25d1102-4270-414a-a8ac-a541c2d6c4b8",
+              "name": "worker",
+              "value": "calidad_datos",
+              "type": "string"
+            },
+            {
+              "id": "8a91e052-e12b-49d5-b8c5-198767cfff9b",
+              "name": "error",
+              "value": "={{ $json.error?.message ?? $json.error ?? 'Error desconocido' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        592,
+        96
+      ],
+      "id": "8513da32-f101-4023-9515-f1904b47d16f",
+      "name": "Contrato de error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Contrato de salida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contrato de error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 60,
+    "availableInMCP": false
+  },
+  "versionId": "d6312716-ef64-4f7d-96a1-84aefac9d4d8",
+  "meta": {},
+  "nodeGroups": [],
+  "id": "KswRay43n6wvI0Cw",
+  "tags": []
+}

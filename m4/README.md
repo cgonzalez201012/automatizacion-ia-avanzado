@@ -38,12 +38,12 @@
 | `Gmail - DBPM Retail Demo` | Gmail OAuth2 API | `Gmail Trigger`, `Gmail Create Draft` | `gmail.readonly` + `gmail.compose` |
 | `Slack - DBPM Retail Demo` | Slack OAuth2 API | `Avisar al Líder de Consultoría`, `Avisar al equipo (email procesado)` | `chat:write` (token de usuario) |
 | `Zoho CRM - DBPM Retail Demo` | OAuth2 API (genérica) | `Zoho Look up`, `Zoho Update`, `Zoho Create` | `ZohoCRM.modules.contacts.READ/CREATE/UPDATE` + `ZohoSearch.securesearch.READ` |
-| `Anthropic account` | Anthropic API | `Anthropic Chat Model`, `Haiku 4.5 - Resumen` | (clave de API; heredada del M1 a M3) |
+| `Anthropic account` | Anthropic API | `Anthropic Chat Model`, `Haiku 4.5 - Resumen` y el `Anthropic Chat Model` de cada Worker | (clave de API; heredada del M1 a M3) |
 | `Airtable Personal Access Token account` | Airtable token | 4 nodos de memoria | (heredada del M3) |
 | `Google Sheets account` | Google Sheets OAuth2 | `Registrar en Log_M2` | (heredada del M2) |
 
 3. **Marcadores de posición que hay que completar** (se reemplazaron los IDs privados antes de publicar): planilla de Google Sheets del `Registrar en Log_M2` (`REEMPLAZAR_POR_ID_DE_TU_GOOGLE_SHEET`), base y tabla de Airtable (`REEMPLAZAR_POR_ID_DE_TU_BASE_AIRTABLE`, `REEMPLAZAR_POR_ID_DE_TU_TABLA_AIRTABLE`) y el canal de Slack de los dos nodos de aviso (`REEMPLAZAR_POR_ID_DE_TU_CANAL_SLACK`). Es esperable que los nodos de Slack muestren un triángulo rojo "Not a valid Slack Channel ID" hasta que se cargue un ID real (captura `m4_51`).
-4. **Sub-workflows del M2.** Los nodos `Ejecutar Worker 1 - Calidad de datos` y `Ejecutar Worker 2 - Maestros` llaman a los workflows `M2 - Worker 1 - Calidad de datos` y `M2 - Worker 2 - Maestros`, que pertenecen a la entrega anterior y no están en este archivo. En otra instancia esos dos nodos quedan sin destino hasta asignarles un workflow; el resto del flujo (entrada unificada, Router, memoria y las tres integraciones) se puede revisar igual. En la instancia donde se probó están asignados.
+4. **Sub-workflows del M2 (incluidos en [`workers/`](workers/)).** Los nodos `Ejecutar Worker 1 - Calidad de datos` y `Ejecutar Worker 2 - Maestros` llaman a dos workflows del M2. Para que el flujo corra completo en otra instancia: (a) importar primero [`workers/M2_Worker_1_Calidad_de_datos.json`](workers/M2_Worker_1_Calidad_de_datos.json) y [`workers/M2_Worker_2_Maestros.json`](workers/M2_Worker_2_Maestros.json) (Workflows → Import from file; usan la credencial `Anthropic account`); (b) en el workflow del M4, abrir esos dos nodos y volver a elegir cada workflow en el desplegable, porque n8n asigna IDs internos nuevos al importar. Cada Worker se publica sin datos fijados (`pinData` vacío) y sin el ID de instancia, igual que el JSON principal.
 5. Etiqueta de Gmail: el trigger lee solo mails **no leídos con la etiqueta `DG-Soporte-Demo`**; hay que crearla en la casilla y elegirla en el nodo.
 
 ---
@@ -170,7 +170,7 @@ Una sola tabla con los contratos del flujo: campo, tipo, ejemplo real y descripc
 | | `worker` | string | `maestros` | `maestros` o `calidad_datos` |
 | | `data.diagnostico` | string | `Alta de proveedor Textil Norte SRL para sucursal Córdoba` | Diagnóstico del Worker |
 | | `data.accion_recomendada` | string | `Solicitar al área de Compras que complete los datos faltantes del proveedor…` | Próxima acción (ejemplo recortado) |
-| | `data.datos_faltantes` | string (opcional) | — | Si existe, se agrega a la respuesta |
+| | `data.datos_faltantes` | string (solo Worker 2) | `Ninguno` si no falta nada | Lo devuelve únicamente `maestros`; se agrega a la respuesta |
 | | `data.requiere_escalamiento` | boolean | `true` / `false` | Se muestra como SI / NO |
 | **C′. Respuesta de un Worker** · error | `status` | string | `error` | Cualquier valor distinto de `success` o la salida de error del nodo va a `Consolidar - Contingencia` |
 | | `worker` | string | `calidad_datos` | |
@@ -828,7 +828,7 @@ Archivos de prueba en [`pruebas/`](pruebas/): `pruebas_if_10_mails.json`, `pin_T
 - El IF anti auto-reply se probó con los 10 mails de prueba, no con un auto-reply real recibido por Gmail.
 - Los caminos de error de Zoho/Gmail (§5.6) se probaron solo offline, salvo T14.
 - El `case_id` (heredado del M3) toma la hora en una zona horaria distinta de la de Buenos Aires (una hora de diferencia con Zoho y Slack); no afecta a la lógica.
-- Los Workers del M2 no se incluyen (§0, punto 4).
+- Al importar en otra instancia hay que volver a elegir los dos workflows en los nodos `Ejecutar Worker 1/2` (§0, punto 4).
 
 **Costo cero.** Ninguna plataforma tiene costo para este módulo:
 
@@ -850,6 +850,7 @@ Auditoría automática del archivo publicado (por script, sobre `checkpoint4_cri
 - Credenciales **solo por nombre e ID** (no hay tokens, claves ni secretos).
 - Sin direcciones de correo reales, sin URL de la instancia de n8n.
 - IDs privados reemplazados por marcadores: planilla de Google Sheets, base y tabla de Airtable, canal de Slack; se quitaron los `cachedResultUrl`; los `webhookId` se regeneraron.
+- Los 2 Workers del M2 (`workers/`): 6 nodos cada uno, `active: false`, `pinData` vacío (se quitaron los datos de prueba fijados), `meta` vacío, credencial solo por nombre e ID, sin mails ni URL.
 - Un solo nodo de Gmail aparte del trigger (`Gmail Create Draft`, recurso `draft`); ninguna operación de envío.
 - Las capturas están recortadas al nodo o al mensaje; se taparon la URL de la instancia, los Client ID de Google y Slack, la URL del espacio de Slack y cualquier dirección real. No se publican capturas con cookies de sesión ni de la bandeja de entrada.
 - La empresa, los remitentes y los contactos de las pruebas son ficticios (DBPM Retail Demo, dominios `.example`).
@@ -1020,3 +1021,5 @@ Extraídas de `connections` del JSON (solo las que tocan un nodo nuevo o reempla
 Nota: no existe `m4_22`. Esa captura mostraba una configuración anterior del Gmail Trigger (Max Emails per Poll = 10) y se descartó; la configuración final (= 1) está en `m4_41`.
 
 Archivos de prueba (carpeta [`pruebas/`](pruebas/)): `pruebas_if_10_mails.json`, `pin_T4_mail_nuevo.json`, `pin_T9T10_sin_nombre_html_largo.json`, `pin_T11_ruta_humana.json`, `T14_zoho_sin_apellido_workflow.json`.
+
+Workers del M2 (carpeta [`workers/`](workers/)): `M2_Worker_1_Calidad_de_datos.json`, `M2_Worker_2_Maestros.json`.

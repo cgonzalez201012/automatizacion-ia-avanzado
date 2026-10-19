@@ -1,0 +1,266 @@
+{
+  "name": "M2 - Worker 2 - Maestros",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "case_id"
+            },
+            {
+              "name": "original_input"
+            },
+            {
+              "name": "intent"
+            },
+            {
+              "name": "confidence",
+              "type": "number"
+            },
+            {
+              "name": "risk"
+            },
+            {
+              "name": "dominio_dato"
+            },
+            {
+              "name": "prioridad"
+            },
+            {
+              "name": "solicitante"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b4376220-1e65-48d9-a01d-464de4ef0b65",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Caso a analizar:\nPedido original: {{ $json.original_input }}\nTipo de caso: {{ $json.intent }}\nDominio del dato: {{ $json.dominio_dato }}\nPrioridad: {{ $json.prioridad }}\nSolicitante: {{ $json.solicitante }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "# ROL\nSos el Worker de Maestros de DBPM - Consulting, para un cliente del sector retail. Recibís un caso ya clasificado de alta o modificación de un dato maestro y hacés una única tarea: analizarlo y proponer el próximo paso.\n# ÁMBITO\nAltas y modificaciones de datos maestros: artículos, proveedores, sucursales y clientes.\n# OBJETIVO\n1. Resumir en una frase qué maestro se quiere dar de alta o modificar.\n2. Listar los datos que faltan para poder cargarlo (por ejemplo CUIT, razón social, condiciones de pago); si no falta nada, escribí \"Ninguno\".\n3. Proponer la acción recomendada para el equipo de Data Governance.\n4. requiere_escalamiento en true si la prioridad es Alta o si datos_faltantes es distinto de \"Ninguno\".\n# REGLAS\n- Respondé solo con el JSON pedido.\n- No inventes datos que no estén en el caso.\n- No aprobes, cargues ni modifiques datos maestros: toda alta o modificación requiere aprobación del Líder de Consultoría.\n- Si el caso no es de tu ámbito, devolvé diagnostico \"FUERA_DE_COMPETENCIA\" y requiere_escalamiento true."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "39a11dea-166c-4e25-8e5c-3f1e520e9931",
+      "name": "Basic LLM Chain",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        224,
+        208
+      ],
+      "id": "e91f67e5-4a9c-4e0a-929c-bd0333348bc3",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "p2pIlqL4D8TT5hbK",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"diagnostico\": \"Alta de un proveedor nuevo para una sucursal\",\n  \"datos_faltantes\": \"CUIT, condiciones de pago\",\n  \"accion_recomendada\": \"Solicitar los datos faltantes y enviar el alta al Líder de Consultoría para su aprobación\",\n  \"requiere_escalamiento\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        208
+      ],
+      "id": "22cb42cc-6b42-4958-8a4b-8e1fcf4252ca",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a6592104-7d14-4832-b5dd-e9e1dad78676",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "5676d0c0-c8f9-4db6-99b4-aa0492075024",
+              "name": "worker",
+              "value": "maestros",
+              "type": "string"
+            },
+            {
+              "id": "6c093d2e-8c5e-47fd-bd1e-a8a67c5c2686",
+              "name": "data.diagnostico",
+              "value": "={{ $json.output.diagnostico }}",
+              "type": "string"
+            },
+            {
+              "id": "287a072b-b831-4472-ae0d-1901581a5548",
+              "name": "=data.accion_recomendada",
+              "value": "={{ $json.output.accion_recomendada }}",
+              "type": "string"
+            },
+            {
+              "id": "7ec2122c-0934-4e65-a62f-67211f5815aa",
+              "name": "=data.requiere_escalamiento",
+              "value": "={{ $json.output.requiere_escalamiento }}",
+              "type": "boolean"
+            },
+            {
+              "id": "2232ff5d-e36a-4e5b-81f7-07b02e2e03c3",
+              "name": "data.datos_faltantes",
+              "value": "={{ $json.output.datos_faltantes }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        592,
+        -96
+      ],
+      "id": "a741fb09-6114-443e-90cb-ccec1f882d0a",
+      "name": "Contrato de salida"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90192dc7-fae9-4619-b190-b4c717a47205",
+              "name": "status",
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "id": "a25d1102-4270-414a-a8ac-a541c2d6c4b8",
+              "name": "worker",
+              "value": "maestros",
+              "type": "string"
+            },
+            {
+              "id": "8a91e052-e12b-49d5-b8c5-198767cfff9b",
+              "name": "error",
+              "value": "={{ $json.error?.message ?? $json.error ?? 'Error desconocido' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        592,
+        96
+      ],
+      "id": "c4f54054-80eb-49f2-a562-c20e326201c4",
+      "name": "Contrato de error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Contrato de salida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contrato de error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 60,
+    "availableInMCP": false
+  },
+  "versionId": "d1a96864-af78-40f2-b476-af395ea7a98b",
+  "meta": {},
+  "nodeGroups": [],
+  "id": "PVbnJr5vWCPw04IH",
+  "tags": []
+}
