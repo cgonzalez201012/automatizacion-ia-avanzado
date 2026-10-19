@@ -2467,6 +2467,7 @@
     },
     {
       "parameters": {
+        "method": "GET",
         "url": "https://www.zohoapis.com/crm/v8/Contacts/search",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "oAuth2Api",
@@ -2601,6 +2602,7 @@
     {
       "parameters": {
         "resource": "draft",
+        "operation": "create",
         "subject": "={{ /^re:/i.test($('Set limpieza CRM').first().json.asunto) ? $('Set limpieza CRM').first().json.asunto : 'Re: ' + $('Set limpieza CRM').first().json.asunto }}",
         "message": "={{ $('Set limpieza CRM').first().json.respuesta_borrador }}",
         "options": {
